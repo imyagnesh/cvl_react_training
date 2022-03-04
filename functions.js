@@ -27,6 +27,14 @@ console.log(add(1,2));
 
 // console.log(fn());
 
+const add = (a, b) => a + b;
+
+const greet = name => `Hello, ${name}`;
+
+console.log(add(1,2));
+
+console.log(greet("yagnesh"));
+
 
 
 
