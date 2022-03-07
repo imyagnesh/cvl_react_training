@@ -42,6 +42,25 @@ const users = [
     }
 ]
 
+const age = 30;
+
+console.log(age/10);
+
+const groupByAge = users.reduce((p, c) => {
+    const ageGroup = Math.floor(c.age/10);
+    const key = `${ageGroup}0-${ageGroup}9`
+    if(p[key] === undefined) {
+        p[key] = [];
+    }
+    p[key].push(c);
+    return p;
+}, {});
+
+
+console.log(groupByAge);
+
+
+
 
 const obj = {
     a: 1, b: 2, c: 3
@@ -53,11 +72,11 @@ const obj = {
 
 // console.log(obj.d);
 
-{
-    '20-29': [],
-    "30-39": [],
-    '0-9': []
-}
+// {
+//     '20-29': [],
+//     "30-39": [],
+//     '0-9': []
+// }
 
 const groupByGender = users.reduce((p, c) => {
     if(p[c.gender] === undefined) {
