@@ -1,7 +1,7 @@
 import React, { Component, createRef } from 'react';
 import ReactDOM from 'react-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Child1 from './Child1';
+import Child2 from './Child2';
 
 // Component Name always start with Upper case
 // per component return only single element
@@ -37,9 +37,18 @@ import Footer from './components/Footer';
 
 // Updating
 
-// Unmonting
+// 1. getDerivedStateFromProps
+// 2. shouldComponentUpdate
+// 3. render
+// 4. getSnapshotBeforeUpdate
+// 5. componentDidUpdate
+
+// Unmounting
+// componentWillUnmount
 
 // Error
+
+// On Prop value change or state value component rerender
 
 class App extends Component {
   // 1. Initialize State Value
@@ -56,8 +65,8 @@ class App extends Component {
     this.h1ref = createRef();
     this.h2ref = createRef();
 
-    console.log('constructor');
-    console.log(document.getElementById('heading'));
+    // console.log('constructor');
+    // console.log(document.getElementById('heading'));
     // API Call and send user information
 
     // Api call get data and base on that data set state value ❌
@@ -65,10 +74,10 @@ class App extends Component {
 
   // Derive new state value based on recent prop and state value
   static getDerivedStateFromProps(props, state) {
-    console.log('getDerivedStateFromProps');
-    console.log(document.getElementById('heading'));
-    console.log(props);
-    console.log(state);
+    // console.log('getDerivedStateFromProps');
+    // console.log(document.getElementById('heading'));
+    // console.log(props);
+    // console.log(state);
     return {
       greet: `Hello, ${props.name}`,
     };
@@ -91,6 +100,18 @@ class App extends Component {
     // using api call we can set State value
   }
 
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    return 300;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log(snapshot);
+    // prevProps
+    // this.props -> new Props
+    // prevState
+    // this.state -> new State
+  }
+
   handleClick = () => {
     this.setState(({ counter }) => ({
       counter: counter + 5,
@@ -106,10 +127,30 @@ class App extends Component {
     });
   };
 
+  changeGreet = () => {
+    this.setState((state, props) => ({
+      greet: `Hola ${props.name}`,
+    }));
+  };
+
+  static getDerivedStateFromError(error) {
+    return {
+      hasError: error,
+    };
+  }
+
+  componentDidCatch(error, info) {
+    console.log(error);
+    console.log(info.componentStack);
+  }
+
   render() {
-    console.log('render');
-    const { counter, greet } = this.state;
-    console.log(document.getElementById('heading'));
+    const { counter, greet, hasError } = this.state;
+
+    if (hasError) {
+      return <h1>{hasError.message}</h1>;
+    }
+
     return (
       <>
         <h1 id="heading" ref={this.h1ref}>
@@ -121,7 +162,12 @@ class App extends Component {
         <button type="button" onClick={this.handleDecrement}>
           Decrement Counter
         </button>
+        <button type="button" onClick={this.changeGreet}>
+          Change Greet Message
+        </button>
         <h2 ref={this.h2ref}>{greet}</h2>
+        {counter < 20 && <Child1 counter={counter} />}
+        <Child2 />
       </>
     );
   }
