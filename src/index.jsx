@@ -183,3 +183,25 @@ class App extends Component {
 // };
 
 ReactDOM.render(<App name="Yagnesh" />, document.getElementById('root'));
+
+// Mounting
+
+// 1. Constructor -> base on prop set State value
+// 2. static getDerivedStateFromProps -> calls Everytime when prop or state value change
+// 3. render
+// 4. componentDidMount (call only once) -> manipulate dom element
+
+// Updating
+
+// 1. getDerivedStateFromProps
+// 2. shouldComponentUpdate
+// 3. render
+// 4. snapshotBeforeUpdate
+// 5. componentDidUpdate -> manipulate Dom
+
+// UnMounting
+// componentWillUnmount -> remove all async functionality on component unmount
+
+// Error
+// 1. getDerivedStateFromError ->
+// 2. componentDidCatch -> log error info
