@@ -1,29 +1,39 @@
 {
   "todoList": [
     {
-      "text": "learn flutter",
-      "isDone": false,
-      "id": 2
-    },
-    {
       "text": "learn react native",
       "isDone": false,
       "id": 3
     },
     {
       "text": "learn go lang",
-      "isDone": true,
+      "isDone": false,
       "id": 4
     },
     {
       "text": "learn anything",
-      "isDone": true,
+      "isDone": false,
       "id": 5
     },
     {
       "text": "learn somthing",
       "isDone": false,
       "id": 6
+    },
+    {
+      "text": "learn python",
+      "isDone": false,
+      "id": 7
+    },
+    {
+      "text": "get milk",
+      "isDone": true,
+      "id": 8
+    },
+    {
+      "text": "asfadsfads",
+      "isDone": false,
+      "id": 9
     }
   ]
 }
