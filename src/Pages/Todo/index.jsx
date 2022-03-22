@@ -13,8 +13,7 @@ class Todo extends PureComponent {
     this.state = {
       todoList: [],
       filterType: 'all',
-      loading: false,
-      error: null,
+      appState: [],
     };
   }
 
@@ -23,18 +22,33 @@ class Todo extends PureComponent {
   }
 
   loadTodos = async (filterType) => {
+    const loadingType = 'LOAD_TODO';
     try {
-      this.setState({ loading: true, error: null });
+      this.setState(({ appState }) => ({
+        appState: [
+          ...appState,
+          { type: loadingType, state: 'loading', message: 'Loading Todo..' },
+        ],
+      }));
       let url = 'todoList?_sort=id&_order=desc';
       if (filterType !== 'all') {
         url += `&isDone=${filterType === 'completed'}`;
       }
       const res = await axiosInstance.get(url);
-      this.setState({ todoList: res.data, filterType });
+      this.setState(({ appState }) => ({
+        appState: appState.filter((x) => x.type !== loadingType),
+        todoList: res.data,
+        filterType,
+      }));
     } catch (error) {
-      this.setState({ error });
-    } finally {
-      this.setState({ loading: false });
+      this.setState(({ appState }) => ({
+        appState: appState.map((x) => {
+          if (x.type === loadingType) {
+            return { ...x, state: 'error', message: 'Load Todo Failed...' };
+          }
+          return x;
+        }),
+      }));
     }
   };
 
@@ -109,16 +123,28 @@ class Todo extends PureComponent {
   };
 
   render() {
-    const { todoList, filterType, error, loading } = this.state;
+    const { todoList, filterType, appState } = this.state;
+    const isLoadTodoLoading = appState.some(
+      (x) => x.type === 'LOAD_TODO' && x.state === 'loading'
+    );
+
+    const loadTodoError = appState.find(
+      (x) => x.type === 'LOAD_TODO' && x.state === 'error'
+    );
+
     return (
       <div className="flex flex-col items-center h-screen">
-        {loading && (
+        {isLoadTodoLoading && (
           <div className="fixed h-screen inset-0 flex justify-center items-center bg-gray-300 bg-opacity-70">
             <Loader className="h-10 w-10 text-teal-600" />
           </div>
         )}
-        {error && (
-          <Alert variant="error" title="Error" description={error.message} />
+        {loadTodoError && (
+          <Alert
+            variant="error"
+            title="Error"
+            description={loadTodoError.message}
+          />
         )}
         <h1 className="text-2xl font-bold my-6 ">Todo App</h1>
         <TodoForm addTodo={this.addTodo} ref={this.todoTextRef} />
