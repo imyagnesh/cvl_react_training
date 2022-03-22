@@ -21,40 +21,54 @@ class Todo extends PureComponent {
     this.loadTodos('all');
   }
 
+  loadingProcess = (type, message, loadingId = -1) => {
+    this.setState(({ appState }) => ({
+      appState: [...appState, { state: 'loading', type, message, loadingId }],
+    }));
+  };
+
+  successProcess = (type, loadingId = -1) => {
+    this.setState(({ appState }) => ({
+      appState: appState.filter(
+        (x) => !(x.type === type && x.loadingId === loadingId)
+      ),
+    }));
+  };
+
+  errorProcess = (type, message, loadingId = -1) => {
+    this.setState(({ appState }) => ({
+      appState: appState.map((x) => {
+        if (x.type === type && x.loadingId === loadingId) {
+          return { ...x, state: 'error', message };
+        }
+        return x;
+      }),
+    }));
+  };
+
   loadTodos = async (filterType) => {
     const loadingType = 'LOAD_TODO';
     try {
-      this.setState(({ appState }) => ({
-        appState: [
-          ...appState,
-          { type: loadingType, state: 'loading', message: 'Loading Todo..' },
-        ],
-      }));
+      this.loadingProcess(loadingType, 'Loading Todo..');
       let url = 'todoList?_sort=id&_order=desc';
       if (filterType !== 'all') {
         url += `&isDone=${filterType === 'completed'}`;
       }
       const res = await axiosInstance.get(url);
-      this.setState(({ appState }) => ({
-        appState: appState.filter((x) => x.type !== loadingType),
+      this.setState({
         todoList: res.data,
         filterType,
-      }));
+      });
+      this.successProcess(loadingType);
     } catch (error) {
-      this.setState(({ appState }) => ({
-        appState: appState.map((x) => {
-          if (x.type === loadingType) {
-            return { ...x, state: 'error', message: 'Load Todo Failed...' };
-          }
-          return x;
-        }),
-      }));
+      this.errorProcess(loadingType, 'Load Todo Failed...');
     }
   };
 
   addTodo = async (event) => {
+    const loadingType = 'ADD_TODO';
     try {
-      this.setState({ loading: true, error: null });
+      this.loadingProcess(loadingType, 'Adding Todo..');
       event.preventDefault();
       const todoText = this.todoTextRef.current.value;
 
@@ -72,16 +86,16 @@ class Todo extends PureComponent {
           this.todoTextRef.current.value = '';
         }
       );
+      this.successProcess(loadingType);
     } catch (error) {
-      this.setState({ error });
-    } finally {
-      this.setState({ loading: false });
+      this.errorProcess(loadingType, 'Add Todo Failed...');
     }
   };
 
   toggleComplete = async (item) => {
+    const loadingType = 'UPDATE_TODO';
     try {
-      this.setState({ loading: true, error: null });
+      this.loadingProcess(loadingType, 'Updating Todo', item.id);
       const res = await axiosInstance.put(`todoList/${item.id}`, {
         ...item,
         isDone: !item.isDone,
@@ -98,10 +112,9 @@ class Todo extends PureComponent {
           ],
         };
       });
+      this.successProcess(loadingType, item.id);
     } catch (error) {
-      this.setState({ error });
-    } finally {
-      this.setState({ loading: false });
+      this.errorProcess(loadingType, 'Update Todo Failed', item.id);
     }
   };
 
@@ -147,11 +160,16 @@ class Todo extends PureComponent {
           />
         )}
         <h1 className="text-2xl font-bold my-6 ">Todo App</h1>
-        <TodoForm addTodo={this.addTodo} ref={this.todoTextRef} />
+        <TodoForm
+          addTodo={this.addTodo}
+          ref={this.todoTextRef}
+          addTodoState={appState.find((x) => x.type === 'ADD_TODO')}
+        />
         <TodoList
           todoList={todoList}
           toggleComplete={this.toggleComplete}
           deleteTodo={this.deleteTodo}
+          appState={appState}
         />
         <TodoFilter loadTodos={this.loadTodos} filterType={filterType} />
       </div>
