@@ -1,4 +1,5 @@
 import React, { PureComponent, createRef } from 'react';
+
 import Alert from '../../components/Alert';
 import Loader from '../../components/Loader';
 import axiosInstance from '../../utils/axiosInstance';
@@ -65,18 +66,13 @@ class Todo extends PureComponent {
     }
   };
 
-  addTodo = async (event) => {
+  addTodo = async (values) => {
     const loadingType = 'ADD_TODO';
     try {
       this.loadingProcess(loadingType, 'Adding Todo..');
-      event.preventDefault();
-      const todoText = this.todoTextRef.current.value;
-      if (!todoText.trim()) {
-        throw new Error('todo text should be mandatory');
-      }
 
       const res = await axiosInstance.post('todoList', {
-        text: todoText,
+        text: values.todoText,
         isDone: false,
       });
 
@@ -163,17 +159,20 @@ class Todo extends PureComponent {
           />
         )}
         <h1 className="text-2xl font-bold my-6 ">Todo App</h1>
+        {/* <ThemeProvider> */}
         <TodoForm
           addTodo={this.addTodo}
           ref={this.todoTextRef}
           addTodoState={appState.find((x) => x.type === 'ADD_TODO')}
         />
+
         <TodoList
           todoList={todoList}
           toggleComplete={this.toggleComplete}
           deleteTodo={this.deleteTodo}
           appState={appState}
         />
+        {/* </ThemeProvider> */}
         <TodoFilter loadTodos={this.loadTodos} filterType={filterType} />
       </div>
     );
