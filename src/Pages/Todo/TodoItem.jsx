@@ -7,7 +7,9 @@ function TodoItem({ item, toggleComplete, deleteTodo, appState }) {
     <div className="m-4 flex items-center">
       <input
         type="checkbox"
-        disabled={appState?.state === 'loading'}
+        disabled={
+          appState?.type === 'UPDATE_TODO' && appState?.state === 'loading'
+        }
         checked={item.isDone}
         onChange={() => toggleComplete(item)}
         className="disabled:cursor-not-allowed disabled:text-gray-500"
@@ -21,7 +23,10 @@ function TodoItem({ item, toggleComplete, deleteTodo, appState }) {
       </p>
       <button
         type="button"
-        className="px-4 py-2 bg-blue-500 rounded-md text-white"
+        disabled={
+          appState?.type === 'DELETE_TODO' && appState?.state === 'loading'
+        }
+        className="px-4 py-2 bg-blue-500 rounded-md text-white disabled:cursor-not-allowed disabled:bg-gray-400"
         onClick={() => deleteTodo(item)}
       >
         Delete

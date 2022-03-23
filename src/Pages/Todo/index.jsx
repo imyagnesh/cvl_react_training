@@ -119,8 +119,9 @@ class Todo extends PureComponent {
   };
 
   deleteTodo = async (item) => {
+    const loadingType = 'DELETE_TODO';
     try {
-      this.setState({ loading: true, error: null });
+      this.loadingProcess(loadingType, 'Deleting Todo', item.id);
       await axiosInstance.delete(`todoList/${item.id}`);
       this.setState(({ todoList }) => {
         const index = todoList.findIndex((x) => x.id === item.id);
@@ -128,10 +129,9 @@ class Todo extends PureComponent {
           todoList: [...todoList.slice(0, index), ...todoList.slice(index + 1)],
         };
       });
+      this.successProcess(loadingType, item.id);
     } catch (error) {
-      this.setState({ error });
-    } finally {
-      this.setState({ loading: false });
+      this.errorProcess(loadingType, 'Delete Todo Failed', item.id);
     }
   };
 

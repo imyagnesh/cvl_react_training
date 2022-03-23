@@ -12,7 +12,9 @@ function TodoList({ todoList, toggleComplete, deleteTodo, appState }) {
           toggleComplete={toggleComplete}
           deleteTodo={deleteTodo}
           appState={appState.find(
-            (x) => x.type === 'UPDATE_TODO' && x.loadingId === item.id
+            (x) =>
+              (x.type === 'UPDATE_TODO' || x.type === 'DELETE_TODO') &&
+              x.loadingId === item.id
           )}
         />
       ))}
