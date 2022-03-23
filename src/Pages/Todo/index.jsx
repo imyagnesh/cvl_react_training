@@ -71,6 +71,9 @@ class Todo extends PureComponent {
       this.loadingProcess(loadingType, 'Adding Todo..');
       event.preventDefault();
       const todoText = this.todoTextRef.current.value;
+      if (!todoText.trim()) {
+        throw new Error('todo text should be mandatory');
+      }
 
       const res = await axiosInstance.post('todoList', {
         text: todoText,
@@ -88,7 +91,7 @@ class Todo extends PureComponent {
       );
       this.successProcess(loadingType);
     } catch (error) {
-      this.errorProcess(loadingType, 'Add Todo Failed...');
+      this.errorProcess(loadingType, error.message || 'Add Todo Failed...');
     }
   };
 
