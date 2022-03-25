@@ -5,7 +5,7 @@ import Loader from '../../components/Loader';
 // import { LocaleContext } from '../../context/localeContext';
 // import { ThemeContext } from '../../context/themeContext';
 
-const TodoForm = forwardRef(({ addTodo, addTodoState }, ref) => {
+function TodoForm({ addTodo, addTodoState }) {
   console.log('Todo Form render');
   return (
     <Formik
@@ -14,11 +14,12 @@ const TodoForm = forwardRef(({ addTodo, addTodoState }, ref) => {
         const errors = {};
         if (!values.todoText) {
           errors.todoText = 'Required...';
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.todoText)
-        ) {
-          errors.todoText = 'Invalid email address';
         }
+        //  else if (
+        //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.todoText)
+        // ) {
+        //   errors.todoText = 'Invalid email address';
+        // }
 
         return errors;
       }}
@@ -40,7 +41,6 @@ const TodoForm = forwardRef(({ addTodo, addTodoState }, ref) => {
               value={values.todoText}
               onChange={handleChange}
               onBlur={handleBlur}
-              ref={ref}
             />
             <button
               type="submit"
@@ -54,9 +54,6 @@ const TodoForm = forwardRef(({ addTodo, addTodoState }, ref) => {
               )}
             </button>
           </div>
-          {addTodoState?.state === 'error' && (
-            <p className="text-sm text-red-400">{addTodoState?.message}</p>
-          )}
           {errors.todoText && (
             <p className="text-sm text-red-400">{errors.todoText}</p>
           )}
@@ -64,7 +61,7 @@ const TodoForm = forwardRef(({ addTodo, addTodoState }, ref) => {
       )}
     </Formik>
   );
-});
+}
 
 TodoForm.displayName = 'TodoForm';
 
