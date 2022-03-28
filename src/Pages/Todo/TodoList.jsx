@@ -3,7 +3,6 @@ import React, { memo } from 'react';
 import TodoItem from './TodoItem';
 
 function TodoList({ todoList, toggleComplete, deleteTodo, appState }) {
-  console.log('Todo List render');
   return (
     <>
       {/* <ThemeContext.Consumer>

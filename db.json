@@ -6,12 +6,12 @@
       "id": 1
     },
     {
-      "text": "ladfadsasdfasdf",
+      "text": "load data using reducer",
       "isDone": false,
       "id": 2
     },
     {
-      "text": "ladfadsasdfasdfasdfasdf",
+      "text": "adding data",
       "isDone": false,
       "id": 3
     },
@@ -21,47 +21,47 @@
       "id": 4
     },
     {
-      "text": "asdfdas",
+      "text": "dfasfasdf",
       "isDone": false,
       "id": 5
     },
     {
-      "text": "asdfa",
+      "text": "asdfads",
       "isDone": false,
       "id": 6
     },
     {
-      "text": "asdfasdf",
+      "text": "asdadsf",
       "isDone": false,
       "id": 7
     },
     {
-      "text": "asdfasd",
+      "text": "asdfadf",
       "isDone": false,
       "id": 8
     },
     {
-      "text": "asdfadsf",
+      "text": "asdefasdf",
       "isDone": false,
       "id": 9
     },
     {
-      "text": "asdfasd",
+      "text": "asdfadsf",
       "isDone": false,
       "id": 10
     },
     {
-      "text": "fdasfgsdf",
+      "text": "asdfasd",
       "isDone": false,
       "id": 11
     },
     {
-      "text": "sdfgsdf",
+      "text": "asdfas",
       "isDone": false,
       "id": 12
     },
     {
-      "text": "gsdfg",
+      "text": "asdfadsf",
       "isDone": false,
       "id": 13
     },
@@ -71,34 +71,19 @@
       "id": 14
     },
     {
-      "text": "asdf",
+      "text": "asdfasdf",
       "isDone": false,
       "id": 15
     },
     {
-      "text": "asdfasdf",
+      "text": "asdf",
       "isDone": false,
       "id": 16
     },
     {
-      "text": "asdfasd",
+      "text": "asdfasdf",
       "isDone": false,
       "id": 17
-    },
-    {
-      "text": "asdfadsf",
-      "isDone": false,
-      "id": 18
-    },
-    {
-      "text": "asdfasdf",
-      "isDone": false,
-      "id": 19
-    },
-    {
-      "text": "asdfasdf",
-      "isDone": false,
-      "id": 20
     }
   ]
 }

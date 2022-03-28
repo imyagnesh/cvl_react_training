@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React, { memo } from 'react';
 
 function TodoFilter({ loadTodos, filterType }) {
-  console.log('todo filter render');
   return (
     <div className="w-full flex">
       <button

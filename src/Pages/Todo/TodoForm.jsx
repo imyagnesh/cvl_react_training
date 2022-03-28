@@ -6,7 +6,7 @@ import Loader from '../../components/Loader';
 // import { ThemeContext } from '../../context/themeContext';
 
 function TodoForm({ addTodo, addTodoState }) {
-  console.log('Todo Form render');
+  console.log('Todo Form');
   return (
     <Formik
       initialValues={{ todoText: '' }}

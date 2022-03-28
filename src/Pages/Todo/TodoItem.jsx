@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React, { memo } from 'react';
 
 function TodoItem({ item, toggleComplete, deleteTodo, appState }) {
-  console.log(appState);
   return (
     <div className="m-4 flex items-center">
       <input

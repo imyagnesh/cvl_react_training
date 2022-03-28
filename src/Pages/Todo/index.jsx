@@ -1,58 +1,49 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useReducer, useCallback, useMemo } from 'react';
 
 import Alert from '../../components/Alert';
 import Loader from '../../components/Loader';
+import { todoInitValue, todoReducer } from '../../reducers/todoReducer';
 import axiosInstance from '../../utils/axiosInstance';
 import TodoFilter from './TodoFilter';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 
 function Todo() {
-  const [todoList, setTodoList] = useState([]);
-  const [filterType, setFilterType] = useState('all');
-  const [appState, setAppState] = useState([]);
-  // const todoTextRef = useRef(null);
+  const [{ todoList, filterType, appState }, dispatch] = useReducer(
+    todoReducer,
+    todoInitValue
+  );
 
-  const loadingProcess = (type, message, loadingId = -1) => {
-    setAppState((value) => [
-      ...value,
-      { state: 'loading', type, message, loadingId },
-    ]);
-  };
-
-  const successProcess = (type, loadingId = -1) => {
-    setAppState((value) =>
-      value.filter((x) => !(x.type === type && x.loadingId === loadingId))
-    );
-  };
-
-  const errorProcess = (type, message, loadingId = -1) => {
-    setAppState((value) =>
-      value.map((x) => {
-        if (x.type === type && x.loadingId === loadingId) {
-          return { ...x, state: 'error', message };
-        }
-        return x;
-      })
-    );
-  };
-
-  const loadTodos = async (ft) => {
+  const loadTodos = useCallback(async (ft) => {
     const loadingType = 'LOAD_TODO';
     try {
-      loadingProcess(loadingType, 'Loading Todo..');
+      dispatch({
+        type: 'LOAD_TODO_REQUEST',
+        payload: { type: loadingType, message: 'Loading Todo..' },
+      });
       let url = 'todoList?_sort=id&_order=desc';
       if (ft !== 'all') {
         url += `&isDone=${ft === 'completed'}`;
       }
       const res = await axiosInstance.get(url);
-      setTodoList(res.data);
-      setFilterType(ft);
-      successProcess(loadingType);
+      dispatch({
+        type: 'LOAD_TODO_SUCCESS',
+        payload: {
+          todoList: res.data,
+          filterType: ft,
+          loadingType,
+        },
+      });
     } catch (error) {
-      errorProcess(loadingType, 'Load Todo Failed...');
+      dispatch({
+        type: 'LOAD_TODO_FAIL',
+        payload: {
+          loadingType,
+          message: 'Load Todo Failed...',
+        },
+      });
     }
-  };
+  }, []);
 
   useEffect(() => {
     loadTodos('all');
@@ -66,63 +57,94 @@ function Todo() {
     (x) => x.type === 'LOAD_TODO' && x.state === 'error'
   );
 
-  const addTodo = async (values, actions) => {
-    console.log(actions);
+  const addTodo = useCallback(async (values, actions) => {
     const loadingType = 'ADD_TODO';
     try {
-      loadingProcess(loadingType, 'Adding Todo..');
-
+      dispatch({
+        type: 'ADD_TODO_REQUEST',
+        payload: { type: loadingType, message: 'Adding Todo..' },
+      });
       const res = await axiosInstance.post('todoList', {
         text: values.todoText,
         isDone: false,
       });
-
-      setTodoList((value) => [res.data, ...value]);
-      setFilterType('all');
-
-      successProcess(loadingType);
+      dispatch({
+        type: 'ADD_TODO_SUCCESS',
+        payload: {
+          todoList: res.data,
+          filterType: 'all',
+          loadingType,
+        },
+      });
       actions.resetForm();
     } catch (error) {
       actions.setErrors({ todoText: 'Add Todo Failed...' });
-      errorProcess(loadingType, error.message || 'Add Todo Failed...');
+      dispatch({
+        type: 'ADD_TODO_FAIL',
+        payload: {
+          loadingType,
+          message: 'ADD Todo Failed...',
+        },
+      });
+      // errorProcess(loadingType, error.message || 'Add Todo Failed...');
     }
-  };
+  }, []);
 
   const toggleComplete = async (item) => {
     const loadingType = 'UPDATE_TODO';
     try {
-      loadingProcess(loadingType, 'Updating Todo', item.id);
+      dispatch({
+        type: 'UPDATE_TODO_REQUEST',
+        payload: {
+          type: loadingType,
+          message: 'Updating Todo..',
+          loadingId: item.id,
+        },
+      });
       const res = await axiosInstance.put(`todoList/${item.id}`, {
         ...item,
         isDone: !item.isDone,
       });
-
-      setTodoList((value) => {
-        const index = value.findIndex((x) => x.id === item.id);
-        return [...value.slice(0, index), res.data, ...value.slice(index + 1)];
+      dispatch({
+        type: 'UPDATE_TODO_SUCCESS',
+        payload: {
+          todoList: res.data,
+          loadingType,
+          loadingId: item.id,
+        },
       });
-
-      successProcess(loadingType, item.id);
     } catch (error) {
-      errorProcess(loadingType, 'Update Todo Failed', item.id);
+      dispatch({
+        type: 'UPDATE_TODO_FAIL',
+        payload: {
+          loadingType,
+          message: 'Update Todo Failed...',
+          loadingId: item.id,
+        },
+      });
     }
   };
 
   const deleteTodo = async (item) => {
-    const loadingType = 'DELETE_TODO';
-    try {
-      loadingProcess(loadingType, 'Deleting Todo', item.id);
-      await axiosInstance.delete(`todoList/${item.id}`);
-      setTodoList((value) => {
-        const index = value.findIndex((x) => x.id === item.id);
-        return [...value.slice(0, index), ...value.slice(index + 1)];
-      });
-
-      successProcess(loadingType, item.id);
-    } catch (error) {
-      errorProcess(loadingType, 'Delete Todo Failed', item.id);
-    }
+    // const loadingType = 'DELETE_TODO';
+    // try {
+    //   loadingProcess(loadingType, 'Deleting Todo', item.id);
+    //   await axiosInstance.delete(`todoList/${item.id}`);
+    //   setTodoList((value) => {
+    //     const index = value.findIndex((x) => x.id === item.id);
+    //     return [...value.slice(0, index), ...value.slice(index + 1)];
+    //   });
+    //   successProcess(loadingType, item.id);
+    // } catch (error) {
+    //   errorProcess(loadingType, 'Delete Todo Failed', item.id);
+    // }
   };
+
+  const addTodoState = appState.find(
+    (x) => x.type === 'ADD_TODO' && x.state === 'loading'
+  );
+
+  const todoFormData = useMemo(() => ({ a: 1 }), []);
 
   return (
     <div className="flex flex-col items-center h-screen">
@@ -142,9 +164,8 @@ function Todo() {
       {/* <ThemeProvider> */}
       <TodoForm
         addTodo={addTodo}
-        addTodoState={appState.find(
-          (x) => x.type === 'ADD_TODO' && x.state === 'loading'
-        )}
+        addTodoState={undefined}
+        todoFormData={todoFormData}
       />
 
       <TodoList
