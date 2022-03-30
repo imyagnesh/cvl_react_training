@@ -1,3 +1,11 @@
 {
-  "todoList": []
+  "todoList": [],
+  "users": [
+    {
+      "email": "yagnesh.modh@gmail.com",
+      "password": "$2a$10$RYqKK.uB1uXEM8S7yNo4UeXR4sRV4DXjVZ/w5/RB6OsYl7bypVcQi",
+      "name": "Yagnesh Modh",
+      "id": 1
+    }
+  ]
 }
