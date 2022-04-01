@@ -40,6 +40,8 @@
     "webpack-dev-server": "^4.7.4"
   },
   "dependencies": {
+    "@headlessui/react": "^1.5.0",
+    "@heroicons/react": "^1.0.6",
     "autoprefixer": "^10.4.4",
     "axios": "^0.26.1",
     "classnames": "^2.3.1",
