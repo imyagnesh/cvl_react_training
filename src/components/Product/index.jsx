@@ -1,7 +1,8 @@
 import React from 'react';
+import axiosInstance from '../../utils/axiosInstance';
 import Review from '../Review';
 
-function Product({ data }) {
+function Product({ data, addToCart, cartItem }) {
   return (
     <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4">
       <div className="w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
@@ -31,18 +32,35 @@ function Product({ data }) {
             <Review {...data.rating} />
           </section>
 
-          <section aria-labelledby="options-heading" className="mt-10">
-            <h3 id="options-heading" className="sr-only">
-              Product options
-            </h3>
-
+          {cartItem ? (
+            <div className="flex mt-6 items-center">
+              <button
+                type="button"
+                onClick={() => addToCart(data.id)}
+                className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                +
+              </button>
+              <span className="mx-4 text-2xl font-semibold">
+                {cartItem.quantity}
+              </span>
+              <button
+                type="button"
+                onClick={() => addToCart(data.id)}
+                className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                -
+              </button>
+            </div>
+          ) : (
             <button
               type="button"
+              onClick={() => addToCart(data.id)}
               className="mt-6 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Add to bag
             </button>
-          </section>
+          )}
         </div>
       </div>
     </div>
