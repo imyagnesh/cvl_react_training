@@ -1,72 +1,14 @@
-import React, { useEffect, useReducer, useMemo, useCallback } from 'react';
-
-import axiosInstance from '../../utils/axiosInstance';
+import React, { useEffect, useContext } from 'react';
 import Product from '../../components/Product';
-import { rootInitValue, rootReducer } from '../../reducers/rootReducer';
+import { CartContext } from '../../context/cartContext';
+import { ProductsContext } from '../../context/productsContext';
 
 function Home() {
-  const [{ loading, products, error, cart }, dispatch] = useReducer(
-    rootReducer,
-    rootInitValue
-  );
+  const { products, productLoading, productsError, loadProducts } =
+    useContext(ProductsContext);
 
-  const productLoading = useMemo(
-    () => loading.find((x) => x.actionName === 'LOAD_PRODUCTS'),
-    [loading]
-  );
-
-  const productsError = useMemo(
-    () => error.find((x) => x.actionName === 'LOAD_PRODUCTS'),
-    [error]
-  );
-
-  const loadProducts = async () => {
-    try {
-      dispatch({
-        type: 'LOAD_PRODUCTS_REQUEST',
-        payload: { message: 'Loading Products' },
-      });
-      const res = await axiosInstance.get('products');
-      dispatch({ type: 'LOAD_PRODUCTS_SUCCESS', payload: res.data });
-    } catch (err) {
-      dispatch({ type: 'LOAD_PRODUCTS_FAIL', payload: err });
-    }
-  };
-
-  const loadCart = async () => {
-    try {
-      dispatch({
-        type: 'LOAD_CART_REQUEST',
-        payload: { message: 'Loading Products' },
-      });
-      const res = await axiosInstance.get('cart');
-      dispatch({ type: 'LOAD_CART_SUCCESS', payload: res.data });
-    } catch (err) {
-      dispatch({ type: 'LOAD_CART_FAIL', payload: err });
-    }
-  };
-
-  const addToCart = useCallback(async (productId) => {
-    try {
-      dispatch({
-        type: 'ADD_CART_REQUEST',
-        payload: { message: 'Adding Item to cart' },
-      });
-      const res = await axiosInstance.post('cart', {
-        productId,
-        quantity: 1,
-      });
-      dispatch({
-        type: 'ADD_CART_SUCCESS',
-        payload: res.data,
-      });
-    } catch (err) {
-      dispatch({
-        type: 'ADD_CART_FAIL',
-        payload: err,
-      });
-    }
-  }, []);
+  const { loadCart, cart, addToCart, updateCartItem, deleteCartItem } =
+    useContext(CartContext);
 
   useEffect(() => {
     Promise.all([loadProducts(), loadCart()]);
@@ -90,6 +32,8 @@ function Home() {
             data={product}
             addToCart={addToCart}
             cartItem={cartItem}
+            updateCartItem={updateCartItem}
+            deleteCartItem={deleteCartItem}
           />
         );
       })}

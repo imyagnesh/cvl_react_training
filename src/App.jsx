@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { CartProvider } from './context/cartContext';
+import { ProductsProvider } from './context/productsContext';
 import AuthLayout from './layout/authLayout';
 import MainLayout from './layout/mainLayout';
 import Home from './Pages/Home';
@@ -11,7 +13,16 @@ import Register from './Pages/Register';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<MainLayout />}>
+      <Route
+        path="/"
+        element={
+          <ProductsProvider>
+            <CartProvider>
+              <MainLayout />
+            </CartProvider>
+          </ProductsProvider>
+        }
+      >
         <Route index element={<Home />} />
       </Route>
       <Route path="/auth" element={<AuthLayout />}>
