@@ -8,6 +8,9 @@ function Product({
   cartItem,
   updateCartItem,
   deleteCartItem,
+  isAdding,
+  isUpdating,
+  isDeleting,
 }) {
   return (
     <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4">
@@ -42,13 +45,14 @@ function Product({
             <div className="flex mt-6 items-center">
               <button
                 type="button"
+                disabled={isUpdating || isDeleting}
                 onClick={() =>
                   updateCartItem({
                     ...cartItem,
                     quantity: cartItem.quantity + 1,
                   })
                 }
-                className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-slate-400"
               >
                 +
               </button>
@@ -57,6 +61,7 @@ function Product({
               </span>
               <button
                 type="button"
+                disabled={isUpdating || isDeleting}
                 onClick={() => {
                   if (cartItem.quantity > 1) {
                     updateCartItem({
@@ -67,7 +72,7 @@ function Product({
                     deleteCartItem(cartItem);
                   }
                 }}
-                className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-slate-400"
               >
                 -
               </button>
@@ -75,8 +80,9 @@ function Product({
           ) : (
             <button
               type="button"
+              disabled={isAdding}
               onClick={() => addToCart(data.id)}
-              className="mt-6 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="mt-6 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-slate-400"
             >
               Add to bag
             </button>

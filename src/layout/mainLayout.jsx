@@ -5,6 +5,7 @@ import { ShoppingBagIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import { AuthContext } from '../context/authContext';
 import { CartContext } from '../context/cartContext';
 import { ProductsContext } from '../context/productsContext';
+import Loader from '../components/Loader';
 
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
@@ -19,13 +20,17 @@ function classNames(...classes) {
 
 function MainLayout() {
   const { user, onLogout } = useContext(AuthContext);
-  const { cart, deleteCartItem } = useContext(CartContext);
-  const { products } = useContext(ProductsContext);
-  const [open, setOpen] = useState(true);
+  const { cart, deleteCartItem, cartLoading, cartError } =
+    useContext(CartContext);
+  const { products, productsError } = useContext(ProductsContext);
+  const [open, setOpen] = useState(false);
 
   if (!user) {
     return <Navigate to="/auth" />;
   }
+
+  console.log('cartError', cartError);
+  console.log('productsError', productsError);
 
   return (
     <>
@@ -83,10 +88,19 @@ function MainLayout() {
                     onClick={() => setOpen((val) => !val)}
                     className="flex items-center bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                   >
-                    <ShoppingBagIcon className="h-6 w-6" aria-hidden="true" />
-                    <span className="px-2">
-                      {cart.reduce((p, c) => p + c.quantity, 0)}
-                    </span>
+                    {cartLoading.length > 0 ? (
+                      <Loader className="h-6 h-6 text-teal-600" />
+                    ) : (
+                      <>
+                        <ShoppingBagIcon
+                          className="h-6 w-6"
+                          aria-hidden="true"
+                        />
+                        <span className="px-2">
+                          {cart.reduce((p, c) => p + c.quantity, 0)}
+                        </span>
+                      </>
+                    )}
                   </button>
 
                   {/* Profile dropdown */}
@@ -292,7 +306,19 @@ function MainLayout() {
                     <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <p>Subtotal</p>
-                        <p>$262.00</p>
+                        <p>
+                          {new Intl.NumberFormat('en-IN', {
+                            currency: 'INR',
+                            style: 'currency',
+                          }).format(
+                            cart.reduce((p, c) => {
+                              const product = products.find(
+                                (x) => x.id === c.productId
+                              );
+                              return p + c.quantity * product.price;
+                            }, 0)
+                          )}
+                        </p>
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">
                         Shipping and taxes calculated at checkout.
@@ -327,6 +353,25 @@ function MainLayout() {
         </Dialog>
       </Transition.Root>
       <Outlet />
+      {[...cartError, ...productsError].map((err, index) => (
+        <div
+          key={index}
+          role="alert"
+          className="fixed w-full md:w-2/3 lg:w-1/2"
+          style={{
+            bottom: index * 100 + 16,
+          }}
+        >
+          <div className="mx-4">
+            <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+              Danger
+            </div>
+            <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+              <p>{err.error.message}</p>
+            </div>
+          </div>
+        </div>
+      ))}
     </>
   );
 }

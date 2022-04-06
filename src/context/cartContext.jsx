@@ -19,7 +19,10 @@ export function CartProvider({ children }) {
       const res = await axiosInstance.get('cart');
       dispatch({ type: 'LOAD_CART_SUCCESS', payload: res.data });
     } catch (err) {
-      dispatch({ type: 'LOAD_CART_FAIL', payload: err });
+      dispatch({
+        type: 'LOAD_CART_FAIL',
+        payload: { error: err },
+      });
     }
   }, []);
 
@@ -27,7 +30,7 @@ export function CartProvider({ children }) {
     try {
       dispatch({
         type: 'ADD_CART_REQUEST',
-        payload: { message: 'Adding Item to cart' },
+        payload: { loadingId: productId, message: 'Adding Item to cart' },
       });
       const res = await axiosInstance.post('cart', {
         productId,
@@ -35,12 +38,12 @@ export function CartProvider({ children }) {
       });
       dispatch({
         type: 'ADD_CART_SUCCESS',
-        payload: res.data,
+        payload: { ...res.data, loadingId: productId },
       });
     } catch (err) {
       dispatch({
         type: 'ADD_CART_FAIL',
-        payload: err,
+        payload: { error: err, loadingId: productId },
       });
     }
   }, []);
@@ -49,17 +52,20 @@ export function CartProvider({ children }) {
     try {
       dispatch({
         type: 'UPDATE_CART_REQUEST',
-        payload: { message: 'Updating Item to cart' },
+        payload: {
+          loadingId: cartItem.productId,
+          message: 'Updating Item to cart',
+        },
       });
       const res = await axiosInstance.put(`cart/${cartItem.id}`, cartItem);
       dispatch({
         type: 'UPDATE_CART_SUCCESS',
-        payload: res.data,
+        payload: { ...res.data, loadingId: cartItem.productId },
       });
     } catch (err) {
       dispatch({
         type: 'UPDATE_CART_FAIL',
-        payload: err,
+        payload: { error: err, loadingId: cartItem.productId },
       });
     }
   }, []);
@@ -68,17 +74,20 @@ export function CartProvider({ children }) {
     try {
       dispatch({
         type: 'DELETE_CART_REQUEST',
-        payload: { message: 'Updating Item to cart' },
+        payload: {
+          loadingId: cartItem.productId,
+          message: 'Updating Item to cart',
+        },
       });
       await axiosInstance.delete(`cart/${cartItem.id}`);
       dispatch({
         type: 'DELETE_CART_SUCCESS',
-        payload: cartItem,
+        payload: { ...cartItem, loadingId: cartItem.productId },
       });
     } catch (err) {
       dispatch({
         type: 'DELETE_CART_FAIL',
-        payload: err,
+        payload: { error: err, loadingId: cartItem.productId },
       });
     }
   }, []);

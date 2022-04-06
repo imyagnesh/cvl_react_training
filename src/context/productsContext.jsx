@@ -20,28 +20,21 @@ export function ProductsProvider({ children }) {
       const res = await axiosInstance.get('products');
       dispatch({ type: 'LOAD_PRODUCTS_SUCCESS', payload: res.data });
     } catch (err) {
-      dispatch({ type: 'LOAD_PRODUCTS_FAIL', payload: err });
+      dispatch({
+        type: 'LOAD_PRODUCTS_FAIL',
+        payload: { error: err },
+      });
     }
   }, []);
-
-  const productLoading = useMemo(
-    () => loading.find((x) => x.actionName === 'LOAD_PRODUCTS'),
-    [loading]
-  );
-
-  const productsError = useMemo(
-    () => error.find((x) => x.actionName === 'LOAD_PRODUCTS'),
-    [error]
-  );
 
   const value = useMemo(
     () => ({
       loadProducts,
       products,
-      productLoading,
-      productsError,
+      productLoading: loading,
+      productsError: error,
     }),
-    [products, productLoading, productsError]
+    [products, loading, error]
   );
 
   return (

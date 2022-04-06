@@ -6,10 +6,12 @@ const errorReducer = (state, { type, payload = {} }) => {
   const [, actionName, actionType] = match;
 
   if (actionType === 'FAIL') {
-    return [...state, { actionName, error: payload }];
+    return [...state, { actionName, ...payload }];
   }
 
-  return state.filter((x) => x.actionName !== actionName);
+  return state.filter(
+    (x) => !(x.actionName === actionName && x.loadingId === payload.loadingId)
+  );
 };
 
 export default errorReducer;
