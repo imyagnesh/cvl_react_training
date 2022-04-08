@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import FileInput from '../../components/FileInput';
 import Input from '../../components/Input';
 
 export const signUpFields = [
@@ -29,6 +30,11 @@ export const signUpFields = [
     placeholder: 'Confirm Password',
     autoComplete: 'new-password',
   },
+  {
+    name: 'photo',
+    component: FileInput,
+    placeholder: 'Upload Photo',
+  },
 ];
 
 export const signUpInitialValues = {
@@ -36,6 +42,7 @@ export const signUpInitialValues = {
   email: '',
   password: '',
   confirmPassword: '',
+  photo: null,
 };
 
 export const signUpValidationSchema = Yup.object().shape({

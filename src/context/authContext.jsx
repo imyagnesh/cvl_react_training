@@ -29,11 +29,20 @@ export function AuthProvider({ children }) {
 
   const onRegister = async (values, actions) => {
     try {
-      const { confirmPassword, ...rest } = values;
-      const res = await axiosInstance.post('register', {
-        ...rest,
-        createdAt: new Date(),
-      });
+      const { confirmPassword, photo, ...rest } = values;
+      console.log(photo);
+      const res = await axiosInstance.post(
+        'register',
+        {
+          ...rest,
+          createdAt: new Date(),
+        },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
       sessionStorage.setItem('@token', JSON.stringify(res.data));
       actions.resetForm();
       setUser(res.data);
