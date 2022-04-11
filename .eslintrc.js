@@ -14,5 +14,7 @@ module.exports = {
   plugins: ['react'],
   rules: {
     'react/prop-types': 0,
+    'default-param-last': 0,
+    'react/jsx-props-no-spreading': 0,
   },
 };

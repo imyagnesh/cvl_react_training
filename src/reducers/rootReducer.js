@@ -1,7 +1,7 @@
 import cartReducer from './cartReducer';
 import errorReducer from './errorReducer';
 import loadingReducer from './loadingReducer';
-import { productsReducer } from './productsReducer';
+import productsReducer from './productsReducer';
 
 export const rootInitValue = {
   products: [],

@@ -1,4 +1,4 @@
-const errorReducer = (state, { type, payload = {} }) => {
+const errorReducer = (state = [], { type, payload = {} }) => {
   const match = /(.*)_(REQUEST|FAIL)/.exec(type);
 
   if (!match) return state;
