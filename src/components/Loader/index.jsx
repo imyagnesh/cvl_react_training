@@ -1,7 +1,6 @@
 import React from 'react';
 
 function Loader({ className, ...props }) {
-  console.log(className);
   return (
     <svg
       className={`animate-spin ${className || ''}`}

@@ -250,12 +250,5 @@
       }
     }
   ],
-  "cart": [
-    {
-      "productId": 1,
-      "quantity": 2,
-      "id": 1,
-      "loadingId": 1
-    }
-  ]
+  "cart": []
 }

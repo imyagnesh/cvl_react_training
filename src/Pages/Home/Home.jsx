@@ -8,9 +8,10 @@ function Home({
   hasProductsError,
   loadCart,
 }) {
+  console.log('Home Component');
+
   useEffect(() => {
-    loadProducts();
-    loadCart();
+    Promise.all([loadProducts(), loadCart()]);
   }, []);
 
   if (isProductsLoading) {
