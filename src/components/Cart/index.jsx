@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { connect } from 'react-redux';
-import { deleteCartItemAction } from '../../actions/cartActions';
 
 function Cart({ open, toggleCart, cart, products, deleteCartItem }) {
   return (
@@ -173,7 +172,14 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteCartItem: (cartItem) => deleteCartItemAction(cartItem)(dispatch),
+  deleteCartItem: (cartItem) =>
+    dispatch({
+      type: 'DELETE_CART_REQUEST',
+      payload: {
+        cartItem,
+        message: 'Updating Item to cart',
+      },
+    }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

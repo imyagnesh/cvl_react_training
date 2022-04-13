@@ -1,6 +1,4 @@
 import { connect } from 'react-redux';
-import { loadProductsAction } from '../../actions/productsActions';
-import { loadCartAction } from '../../actions/cartActions';
 import Home from './Home';
 
 const mapStateToProps = (state) => ({
@@ -12,8 +10,16 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadProducts: () => loadProductsAction()(dispatch),
-  loadCart: () => loadCartAction()(dispatch),
+  loadProducts: () =>
+    dispatch({
+      type: 'LOAD_PRODUCTS_REQUEST',
+      payload: { message: 'Loading Products' },
+    }),
+  loadCart: () =>
+    dispatch({
+      type: 'LOAD_CART_REQUEST',
+      payload: { message: 'Loading Products' },
+    }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
