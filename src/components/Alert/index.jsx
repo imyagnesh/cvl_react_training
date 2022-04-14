@@ -11,6 +11,7 @@ function Alert({ variant, title, description }) {
       role="alert"
     >
       <div
+        data-testid="divider"
         className={classNames('border-t-4', {
           'border-teal-500': variant === 'success',
           'border-red-500': variant === 'error',
@@ -36,8 +37,12 @@ function Alert({ variant, title, description }) {
           )}
         </div>
         <div>
-          <p className="font-bold">{title}</p>
-          <p className="text-sm">{description}</p>
+          <p data-testid="title" className="font-bold">
+            {title}
+          </p>
+          <p data-testid="description" className="text-sm">
+            {description}
+          </p>
         </div>
       </div>
     </div>

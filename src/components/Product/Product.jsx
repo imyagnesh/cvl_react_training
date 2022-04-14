@@ -16,7 +16,6 @@ function Product({
   isUpdating,
   isDeleting,
 }) {
-  console.log('product component');
   return (
     <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4">
       <div className="w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">

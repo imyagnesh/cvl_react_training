@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1649939942843" clover="3.2.0">
+  <project timestamp="1649939942843" name="All files">
+    <metrics statements="10" coveredstatements="6" conditionals="16" coveredconditionals="9" methods="8" coveredmethods="6" elements="34" coveredelements="21" complexity="0" loc="10" ncloc="10" packages="3" files="3" classes="3"/>
+    <package name="Alert">
+      <metrics statements="1" coveredstatements="1" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
+      <file name="index.jsx" path="/Users/yagneshmodh/Documents/projects/cvl_react_training/src/components/Alert/index.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
+        <line num="8" count="7" type="stmt"/>
+      </file>
+    </package>
+    <package name="Product">
+      <metrics statements="6" coveredstatements="2" conditionals="8" coveredconditionals="1" methods="4" coveredmethods="2"/>
+      <file name="Product.jsx" path="/Users/yagneshmodh/Documents/projects/cvl_react_training/src/components/Product/Product.jsx">
+        <metrics statements="6" coveredstatements="2" conditionals="8" coveredconditionals="1" methods="4" coveredmethods="2"/>
+        <line num="19" count="3" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="66" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="84" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="Review">
+      <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3"/>
+      <file name="index.jsx" path="/Users/yagneshmodh/Documents/projects/cvl_react_training/src/components/Review/index.jsx">
+        <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3"/>
+        <line num="5" count="15" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="15" count="15" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
